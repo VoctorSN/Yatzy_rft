@@ -1,0 +1,13 @@
+# VSCode
+.vscode
+.cache
+
+# Python
+venv/
+__pycache__
+
+# Pytest
+.pytest_cache
+
+# Personal notes
+doc/
