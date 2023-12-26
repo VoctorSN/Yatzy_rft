@@ -28,7 +28,7 @@ def test_yatzy():
     # El algoritmo para averiguar si todos los dados son iguales
     # es muy complejo
     assert 50 == Yatzy.yatzy(1, 1, 1, 1, 1)
-    assert 0 == Yatzy.yatzy(1, 1, 1, 2, 1)
+    assert 0 == Yatzy.yatzy(1, 1, 1, 1, 2)
 
 
 # Ones, Twos, Threes, Fours, Fives, Sixes:

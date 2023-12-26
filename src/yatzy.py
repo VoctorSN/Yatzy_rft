@@ -15,8 +15,8 @@ class Yatzy:
 
     @staticmethod
     def yatzy(*dice):
-        return (50 if dice.count(dice[0]) == len(dice) else 0)
-    
+        return 50 if (len(dice) == 1 and sorted(dice[0])[0] == sorted(dice[0])[-1]) or (len(dice) > 1 and sorted(dice)[0] == sorted(dice)[-1]) else 0
+        
     @staticmethod
     def ones(*dice):
         return dice.count(1)
@@ -40,10 +40,7 @@ class Yatzy:
 
     @staticmethod
     def pair(*dice):
-        for pip in Pips.reversedValues():
-            if dice.count(pip >= 2):
-                return 2*pip
-        return 0
+        return max([x for x in set(dice) if dice.count(x) >= 2], default=0) * 2
     
     @classmethod
     def two_pairs(cls, *dice):
@@ -51,16 +48,15 @@ class Yatzy:
 
     @classmethod
     def three_of_a_kind(cls, *dice):
-        return cls.__biggest_pip_repeated(dice, 3) * 3 if dice.count(cls.__biggest_pip_repeated(dice, 3))>=3 else 0
+        return cls.__biggest_pip_repeated(dice, 3) * 3 if dice.count(cls.__biggest_pip_repeated(dice, 3)) >= 3 else 0
 
     @classmethod
     def four_of_a_kind(cls, *dice):
-        return cls.__biggest_pip_repeated(dice, 4) * 4 if dice.count(cls.__biggest_pip_repeated(dice, 4))>=4 else 0
+        return cls.__biggest_pip_repeated(dice, 4) * 4 if dice.count(cls.__biggest_pip_repeated(dice, 4)) >= 4 else 0
 
     @classmethod
     def __biggest_pip_repeated(cls, dice, times):
-        pips = cls.__filter_pips_repeated(dice, times)
-        return pips[0] if pips else []
+        return cls.__filter_pips_repeated(dice, times)[0] if cls.__filter_pips_repeated(dice, times) else []
 
     @classmethod
     def __filter_pips_repeated(cls, dice, times):
@@ -76,15 +72,11 @@ class Yatzy:
 
     @classmethod
     def fullHouse(cls, *dice):
-        if cls.two_of_a_kind(*dice) and cls.three_of_a_kind(*dice):
-            return cls.two_of_a_kind(*dice) + cls.three_of_a_kind(*dice)
-        else:
-            return 0
+        return cls.two_of_a_kind(*dice) + cls.three_of_a_kind(*dice) if cls.two_of_a_kind(*dice) and cls.three_of_a_kind(*dice) else 0
 
     @classmethod
-    def two_of_a_kind(cls, *dice):
-        PAIR = 2
-        for pip in Pips.reversedValues():
-            if dice.count(pip) == PAIR:
-                return PAIR * pip
-        return 0
+    def two_of_a_kind(*dice):
+        return next((2 * pip for pip in set(dice) if dice.count(pip) == 2), 0)
+    
+    
+
