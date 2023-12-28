@@ -177,6 +177,7 @@ class Yatzy:
         si se cumple la condicion se suman todos los numeros
         """
         return (sum(dice)
-                if cls.filter_pips_repeated(dice, 2)
+                if len(cls.filter_pips_repeated(dice, 2)) == 2
                 and cls.filter_pips_repeated(dice, 3) else 0)
 
+print(Yatzy.fives(4, 5, 6, 4, 5))

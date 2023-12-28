@@ -1,2 +1,4 @@
-from yatzy import Yatzy
-from pips import Pips
+"""_summary_
+"""
+from src.yatzy import Yatzy
+from src.pips import Pips
