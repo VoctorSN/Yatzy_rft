@@ -1,5 +1,8 @@
+"""
 
-# No escribir con caracteres regionales
+Casos test de dfleta
+
+"""
 
 import pytest
 from src.yatzy import Yatzy

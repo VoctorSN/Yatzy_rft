@@ -1,82 +1,182 @@
-from src.pips import Pips
+
+"""
+    Modulo de la clase yatzy
+    En este modulo hay 1 clase
+    yatzy y detro de ella hay diferentes
+    funciones/metodos, cada uno
+    de ellos es un metodo de puntuaje
+    del juego yatzy,
+    todos estos metodos tienen
+    como argumento una lista de enteros que
+    son los dados del juego,
+    dependiendo de los dados que salgan 
+    y el metodo de puntuaje que elijas
+    obtendras mas o menos puntos 
+"""
+if __name__ == "__main__":
+
+    from pips import Pips
+
+else:
+
+    from src.pips import Pips
 
 class Yatzy:
 
-    # No es necesario.
-    # Lo mantengo para no romper la interfaz
-    # publica de la clase segun los
-    # casos test originales.
+    """
+    clase yatzy con los metodos
+    de puntuaje
+    """
     def __init__(self, *dice):
         self.dice = list(dice)
 
     @staticmethod
     def chance(*dice):
+        """
+        devuelve un entero,
+        la suma de todos los dados
+        """
         return sum(dice)
 
     @staticmethod
     def yatzy(*dice):
-        return 50 if (len(dice) == 1 and sorted(dice[0])[0] == sorted(dice[0])[-1]) or (len(dice) > 1 and sorted(dice)[0] == sorted(dice)[-1]) else 0
-        
+        """
+        devuelve 50 si todos
+        los dados son el mismo numero,
+        ordenando la lista si el primer
+        numero y el ultimo son el mismo
+        la lista esta conformada por el mismo 
+        entero
+        """
+        return (50 if (len(dice) == 1 and sorted(dice[0])[0] == sorted(dice[0])[-1])
+                or (len(dice) > 1 and sorted(dice)[0] == sorted(dice)[-1]) else 0)
+
     @staticmethod
     def ones(*dice):
+        """
+        suma 1 punto por cada 1 que salga
+        """
         return dice.count(1)
 
     @staticmethod
     def twos(*dice):
+        """
+        suma 2 puntos por cada 2 que salga
+        """
         return dice.count(2) * 2
 
     @staticmethod
     def threes(*dice):
+        """
+        suma 3 puntos por cada 3 que salga
+        """
         return dice.count(3) * 3
 
-    def fours(self):
-        return self.dice.count(4) * 4
-
-    def fives(self):
-        return self.dice.count(5) * 5
-
-    def sixes(self):
-        return self.dice.count(6) * 6
+    @staticmethod
+    def fours(*dice):
+        """
+        suma 4 puntos por cada 4 que salga
+        """
+        return dice.count(4) * 4
 
     @staticmethod
-    def pair(*dice):
-        return max([x for x in set(dice) if dice.count(x) >= 2], default=0) * 2
-    
+    def fives(*dice):
+        """
+        suma 5 puntos por cada 5 que salga
+        """
+        return dice.count(5) * 5
+
+    @staticmethod
+    def sixes(*dice):
+        """
+        suma 6 puntos por cada 6 que salga
+        """
+        return dice.count(6) * 6
+
+    # @staticmethod
+    # def pair(cls,*dice):
+    #     crea una lista sin repetidos
+    #     con todos los numeros que aparecen
+    #     2 o mas veces y los multiplica por 2,
+        # si no hay repetidos puntua 0
+        #  return cls.filter_pips_repeated(dice, 2)[0] * 2 if cls.filter_pips_repeated(dice, 2) else 0
+
     @classmethod
     def two_pairs(cls, *dice):
-        return sum(cls.__filter_pips_repeated(dice, 2)) * 2 if len(cls.__filter_pips_repeated(dice, 2)) == 2 else 0
+        """
+        utiliza una funcion que saca los numeros
+        que se han repetido 2 veces y multiplica
+        la suma por 2 si es que existen 2 parejas
+        """
+        return (sum(cls.filter_pips_repeated(dice, 2)) * 2
+                if len(cls.filter_pips_repeated(dice, 2)) == 2 else 0)
 
     @classmethod
     def three_of_a_kind(cls, *dice):
-        return cls.__biggest_pip_repeated(dice, 3) * 3 if dice.count(cls.__biggest_pip_repeated(dice, 3)) >= 3 else 0
+        """
+        si un numero se repite 3 veces se detecta 
+        con la funcion filter pips repeated y si 
+        exite ordena la lista y coje el numero del
+        medio de la lista ordenada
+        """
+        return sorted(dice)[2] * 3 if cls.filter_pips_repeated(dice, 3) else 0
 
     @classmethod
     def four_of_a_kind(cls, *dice):
-        return cls.__biggest_pip_repeated(dice, 4) * 4 if dice.count(cls.__biggest_pip_repeated(dice, 4)) >= 4 else 0
+        """
+        si un numero se repite 3 veces se detecta 
+        con la funcion filter pips repeated y si 
+        exite ordena la lista y coje el numero del
+        medio de la lista ordenada
+        """
+        return sorted(dice)[2] * 4 if cls.filter_pips_repeated(dice, 4) else 0
 
     @classmethod
-    def __biggest_pip_repeated(cls, dice, times):
-        return cls.__filter_pips_repeated(dice, times)[0] if cls.__filter_pips_repeated(dice, times) else []
+    def biggest_pip_repeated(cls, dice, times):
+        """
+        llama a la funcion filter_pips_repeated y 
+        si devuelve algun numero coje el primero 
+        (que es el mas alto) y lo devuelve
+        """
+        return (cls.filter_pips_repeated(dice, times)[0]
+                if cls.filter_pips_repeated(dice, times) else [])
 
     @classmethod
-    def __filter_pips_repeated(cls, dice, times):
-        return list(filter(lambda pip: dice.count(pip) >= times, Pips.reversedValues()))
+    def filter_pips_repeated(cls, dice, times):
+        """
+        con el argumento times, numero de veces,
+        crea una lista con los numeros que se 
+        repites times veces ordenados de mayor a menor
+        """
+        return list(filter(lambda pip: dice.count(pip) >= times, [6,5,4,3,2,1]))
 
     @classmethod
     def small_straight(cls, *dice):
-        return cls.chance(*dice) if not Pips.minus(Pips.SIX) - set(dice) else 0
+        """
+        recibe una lista de enteros, los ordena
+        y para que sume puntos con este sistema
+        la lista ordenada tiene que ser los numeros
+        de 1 al 5
+        """
+        return 15 if sorted(dice) == [1,2,3,4,5] else 0
 
     @classmethod
     def large_straight(cls, *dice):
-        return cls.chance(*dice) if not Pips.minus(Pips.ONE) - set(dice) else 0
+        """
+        hace lo mismo que small_straight pero
+        con los numeros del 2 al 6
+        """
+        return 20 if sorted(dice) == [2,3,4,5,6] else 0
 
     @classmethod
-    def fullHouse(cls, *dice):
-        return cls.two_of_a_kind(*dice) + cls.three_of_a_kind(*dice) if cls.two_of_a_kind(*dice) and cls.three_of_a_kind(*dice) else 0
-
-    @classmethod
-    def two_of_a_kind(*dice):
-        return next((2 * pip for pip in set(dice) if dice.count(pip) == 2), 0)
-    
-    
+    def full_house(cls, *dice):
+        """
+        para que puntue este metodo en la lista
+        tienen que darnos un numero que aparezca
+        2 veces y otro que aparezca 3,
+        si se cumple la condicion se suman todos los numeros
+        """
+        return (sum(dice)
+                if cls.filter_pips_repeated(dice, 2)
+                and cls.filter_pips_repeated(dice, 3) else 0)
 
