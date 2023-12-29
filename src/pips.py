@@ -17,7 +17,7 @@ class Pips(Enum):
     @classmethod
     def reversedValues(cls):
         return reversed(cls.values())
-    
+
     @classmethod
     def minus(cls, pip):
         return set(cls.values()) - { pip.value }
@@ -31,7 +31,8 @@ if __name__ == "__main__":
     print(Pips.ONE)
     print(Pips.ONE.name)
     print(Pips.ONE.value)
-    print(number._value_ for number in Pips.__members__.values())
+    for number in Pips.__members__.values():
+        print(number._value_)
     print(Pips.values())
     print(Pips.reversedValues())
     print(Pips.minus(Pips.FIVE))

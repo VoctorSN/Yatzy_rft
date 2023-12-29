@@ -41,15 +41,15 @@ class Yatzy:
     @staticmethod
     def yatzy(*dice):
         """
-        devuelve 50 si todos
-        los dados son el mismo numero,
-        ordenando la lista si el primer
-        numero y el ultimo son el mismo
-        la lista esta conformada por el mismo 
-        entero
+        la funcion set crea
+        un tipo de objeto que es
+        como una lista pero sin repetidos,
+        por tanto si el dice sin repetidos
+        tiene 1 de latgo esto significa que
+        todo el dice esta formado por 1 unico
+        numnero repetido
         """
-        return (50 if (len(dice) == 1 and sorted(dice[0])[0] == sorted(dice[0])[-1])
-                or (len(dice) > 1 and sorted(dice)[0] == sorted(dice)[-1]) else 0)
+        return 50 if len(set(dice)) == 1 else 0
 
     @staticmethod
     def ones(*dice):
@@ -93,13 +93,16 @@ class Yatzy:
         """
         return dice.count(6) * 6
 
-    # @staticmethod
-    # def pair(cls,*dice):
-    #     crea una lista sin repetidos
-    #     con todos los numeros que aparecen
-    #     2 o mas veces y los multiplica por 2,
-        # si no hay repetidos puntua 0
-        #  return cls.filter_pips_repeated(dice, 2)[0] * 2 if cls.filter_pips_repeated(dice, 2) else 0
+    @classmethod
+    def pair(cls,*dice):
+        """
+        crea una lista sin repetidos
+        con todos los numeros que aparecen
+        2 o mas veces y los multiplica por 2,
+        si no hay repetidos puntua 0
+        """
+        return (cls.biggest_pip_repeated(dice,2) * 2
+                if cls.filter_pips_repeated(dice, 2) else 0)
 
     @classmethod
     def two_pairs(cls, *dice):
@@ -158,7 +161,7 @@ class Yatzy:
         la lista ordenada tiene que ser los numeros
         de 1 al 5
         """
-        return 15 if sorted(dice) == [1,2,3,4,5] else 0
+        return 15 if sorted(dice) == list(Pips.minus(Pips.SIX)) else 0
 
     @classmethod
     def large_straight(cls, *dice):
@@ -166,7 +169,7 @@ class Yatzy:
         hace lo mismo que small_straight pero
         con los numeros del 2 al 6
         """
-        return 20 if sorted(dice) == [2,3,4,5,6] else 0
+        return 20 if sorted(dice) == list(Pips.minus(Pips.ONE)) else 0
 
     @classmethod
     def full_house(cls, *dice):
@@ -179,5 +182,3 @@ class Yatzy:
         return (sum(dice)
                 if len(cls.filter_pips_repeated(dice, 2)) == 2
                 and cls.filter_pips_repeated(dice, 3) else 0)
-
-print(Yatzy.fives(4, 5, 6, 4, 5))

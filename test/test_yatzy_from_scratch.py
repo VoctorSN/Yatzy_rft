@@ -98,15 +98,16 @@ def inyector():
     return tirada
 
 @pytest.mark.fours
-def test_fours(inyector):
+def test_fours(valores):
     '''
     The player scores the sum of the dice that reads four
     '''
     # es necesario un objeto de tipo Yatzy ya creado
+    valores=inyector()
     valorEsperado = 8
     # No puedo testear con fixtures = inyeccion de dependencias
     # los metodos estaticos como chance()
-    assert valorEsperado == Yatzy.fours(inyector)
+    assert valorEsperado == Yatzy.fours(valores)
 
 @pytest.mark.fives
 def test_fives(inyector):
