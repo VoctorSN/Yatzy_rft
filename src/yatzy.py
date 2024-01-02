@@ -30,6 +30,33 @@ class Yatzy:
     def __init__(self, *dice):
         self.dice = list(dice)
 
+    @classmethod
+    def biggest_pip_repeated(cls, dice, times):
+        """
+        llama a la funcion filter_pips_repeated y 
+        si devuelve algun numero coje el primero 
+        (que es el mas alto) y lo devuelve
+        """
+        return (cls.filter_pips_repeated(dice, times)[0]
+                if cls.filter_pips_repeated(dice, times) else [])
+
+    @classmethod
+    def filter_pips_repeated(cls, dice, times):
+        """
+        con el argumento times, numero de veces,
+        crea una lista con los numeros que se 
+        repites times veces ordenados de mayor a menor
+        """
+        return list(filter(lambda pip: dice.count(pip) >= times, [6,5,4,3,2,1]))
+
+    @staticmethod
+    def count_mult(dice,number):
+        """
+        Para facilitar la resoulcion de ones,twos...
+        y evitar la repeticion, creo esta funcion
+        """
+        return dice.count(number) * number if isinstance(dice, tuple) else Yatzy.count_mult(dice, number) * number
+
     @staticmethod
     def chance(*dice):
         """
@@ -51,47 +78,47 @@ class Yatzy:
         """
         return 50 if len(set(dice)) == 1 else 0
 
-    @staticmethod
-    def ones(*dice):
+    @classmethod
+    def ones(cls,*dice):
         """
         suma 1 punto por cada 1 que salga
         """
-        return dice.count(1)
+        return cls.count_mult(dice,1)
 
-    @staticmethod
-    def twos(*dice):
+    @classmethod
+    def twos(cls,*dice):
         """
         suma 2 puntos por cada 2 que salga
         """
-        return dice.count(2) * 2
+        return cls.count_mult(dice,2)
 
-    @staticmethod
-    def threes(*dice):
+    @classmethod
+    def threes(cls,*dice):
         """
         suma 3 puntos por cada 3 que salga
         """
-        return dice.count(3) * 3
+        return cls.count_mult(dice,3)
 
-    @staticmethod
-    def fours(*dice):
+    @classmethod
+    def fours(cls,*dice):
         """
         suma 4 puntos por cada 4 que salga
         """
-        return dice.count(4) * 4
+        return cls.count_mult(dice,4)
 
-    @staticmethod
-    def fives(*dice):
+    @classmethod
+    def fives(cls,*dice):
         """
         suma 5 puntos por cada 5 que salga
         """
-        return dice.count(5) * 5
+        return cls.count_mult(dice,5)
 
-    @staticmethod
-    def sixes(*dice):
+    @classmethod
+    def sixes(cls,*dice):
         """
         suma 6 puntos por cada 6 que salga
         """
-        return dice.count(6) * 6
+        return cls.count_mult(dice,6)
 
     @classmethod
     def pair(cls,*dice):
@@ -133,25 +160,6 @@ class Yatzy:
         medio de la lista ordenada
         """
         return sorted(dice)[2] * 4 if cls.filter_pips_repeated(dice, 4) else 0
-
-    @classmethod
-    def biggest_pip_repeated(cls, dice, times):
-        """
-        llama a la funcion filter_pips_repeated y 
-        si devuelve algun numero coje el primero 
-        (que es el mas alto) y lo devuelve
-        """
-        return (cls.filter_pips_repeated(dice, times)[0]
-                if cls.filter_pips_repeated(dice, times) else [])
-
-    @classmethod
-    def filter_pips_repeated(cls, dice, times):
-        """
-        con el argumento times, numero de veces,
-        crea una lista con los numeros que se 
-        repites times veces ordenados de mayor a menor
-        """
-        return list(filter(lambda pip: dice.count(pip) >= times, [6,5,4,3,2,1]))
 
     @classmethod
     def small_straight(cls, *dice):
