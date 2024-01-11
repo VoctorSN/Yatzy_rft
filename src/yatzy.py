@@ -58,7 +58,8 @@ class Yatzy:
 
     @classmethod
     def score_pair(cls,*dados:list) -> int:
-        return max(cls.only_repeated(dados,2)) * 2
+        maximo_repetido=cls.only_repeated(dados,2)
+        return max(maximo_repetido) * 2 if maximo_repetido else Yatzy.NO_POINTS
 
     @classmethod
     def two_pair(cls,*dados:list) -> int:
@@ -75,13 +76,13 @@ class Yatzy:
 
     @classmethod
     def smallStraight(cls,*dados):
-        return sum(dados) if 6 not in dados and len(cls.only_repeated(dados,2)) == 0 else Yatzy.NO_POINTS
+        return sum(dados) if sum(set(dados) - {6}) == sum(dados) else Yatzy.NO_POINTS
 
     @classmethod
     def largeStraight(cls,*dados):
-        return sum(dados) if 1 not in dados and len(cls.only_repeated(dados,2)) == 0 else Yatzy.NO_POINTS
+        return sum(dados) if sum(set(dados) - {1}) == sum(dados) else Yatzy.NO_POINTS
 
 
     @classmethod
     def fullHouse(cls,*dados):
-        return sum(dados) if len(cls.only_repeated(dados,2)) == 2 else Yatzy.NO_POINTS
+        return sum(dados) if len(cls.only_repeated(dados,2)) == 2 and len(set(dados)) == 2 else Yatzy.NO_POINTS

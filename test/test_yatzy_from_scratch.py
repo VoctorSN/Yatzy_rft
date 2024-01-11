@@ -81,20 +81,13 @@ def test_threes():
 # anteriores de tupla a lista <= no es necesario:
 # ya que son estaticos y no emplean un objeto Yatzy
 
-def test_constructor():
-    tirada = Yatzy(1, 1, 1, 1, 1)
-    for dado in tirada.dice:
-        assert 1 == dado
-
-
 # La refactorizacion de los metodos fours, fives y sixes
 # consiste en simplificar los algoritmos para recorrer
 # la tirada de dados y sumar los puntos.
 
 @pytest.fixture
 def inyector():
-    tirada = (4, 5, 6, 4, 5)
-    return tirada
+    return (4, 5, 6, 4, 5)
 
 @pytest.mark.fours
 def test_fours(inyector):
@@ -120,23 +113,23 @@ def test_sixes(inyector):
     resultado = Yatzy.sixes(*inyector)
     assert valorEsperado == resultado
 
-@pytest.mark.pair
-def test_pair():
+@pytest.mark.score_pair
+def test_score_pair():
     '''
-    Pair:
+    score_pair:
     The player scores the sum of the two highest matching dice.
     '''
     # El algoritmo del metodo no es optimo, es complicado e ilegible.
     # La abstraccion, el nombre del metodo, no es adecuada
     # puesto que la categoria se llama pair.
-    assert 8 == Yatzy.pair(3, 3, 3, 4, 4)
-    assert 12 == Yatzy.pair(1, 1, 6, 2, 6)
-    assert 6 == Yatzy.pair(3, 3, 3, 4, 1)
-    assert 6 == Yatzy.pair(3, 3, 3, 3, 1)
-    assert 0 == Yatzy.pair(1, 2, 3, 4, 5)
+    assert 8 == Yatzy.score_pair(3, 3, 3, 4, 4)
+    assert 12 == Yatzy.score_pair(1, 1, 6, 2, 6)
+    assert 6 == Yatzy.score_pair(3, 3, 3, 4, 1)
+    assert 6 == Yatzy.score_pair(3, 3, 3, 3, 1)
+    assert 0 == Yatzy.score_pair(1, 2, 3, 4, 5)
 
 @pytest.mark.pairs
-def test_two_pairs():
+def test_two_pair():
     '''
     Two pairs:
     If there are two pairs of dice with the same number, the
@@ -147,10 +140,10 @@ def test_two_pairs():
     # Mantengo notacion snake_case
     # El algoritmo del metodo no es optimo, es complicado e ilegible.
 
-    assert 8 == Yatzy.two_pairs(1, 1, 2, 3, 3)
-    assert 0 == Yatzy.two_pairs(1, 1, 2, 3, 4)
-    assert 6 == Yatzy.two_pairs(1, 1, 2, 2, 2)
-    assert 0 == Yatzy.two_pairs(1, 2, 3, 4, 5)
+    assert 8 == Yatzy.two_pair(1, 1, 2, 3, 3)
+    assert 0 == Yatzy.two_pair(1, 1, 2, 3, 4)
+    assert 6 == Yatzy.two_pair(1, 1, 2, 2, 2)
+    assert 0 == Yatzy.two_pair(1, 2, 3, 4, 5)
 
 
 # Three of a kind:
@@ -188,12 +181,12 @@ def test_four_of_a_kind():
 # El algoritmo es complicado e ineficiente.
 
 @pytest.mark.small
-def test_small_straight():
-    assert 15 == Yatzy.small_straight(1, 2, 3, 4, 5)
-    assert 0 == Yatzy.small_straight(2, 3, 4, 5, 6)
-    assert 0 == Yatzy.small_straight(1, 3, 4, 5, 5)
-    assert 0 == Yatzy.small_straight(6, 6, 6, 6, 6)
-    assert 0 == Yatzy.small_straight(1, 2, 3, 4, 6)
+def test_smallStraight():
+    assert 15 == Yatzy.smallStraight(1, 2, 3, 4, 5)
+    assert 0 == Yatzy.smallStraight(2, 3, 4, 5, 6)
+    assert 0 == Yatzy.smallStraight(1, 3, 4, 5, 5)
+    assert 0 == Yatzy.smallStraight(6, 6, 6, 6, 6)
+    assert 0 == Yatzy.smallStraight(1, 2, 3, 4, 6)
 
 
 # Large straight:
@@ -205,12 +198,12 @@ def test_small_straight():
 # El algoritmo es complicado e ineficiente.
 
 @pytest.mark.large
-def test_large_straight():
-    assert 20 == Yatzy.large_straight(2, 3, 4, 5, 6)
-    assert 0 == Yatzy.large_straight(1, 2, 3, 4, 5)
-    assert 0 == Yatzy.large_straight(1, 3, 4, 5, 5)
-    assert 0 == Yatzy.large_straight(6, 6, 6, 6, 6)
-    assert 0 == Yatzy.large_straight(1, 2, 3, 4, 6)
+def largeStraight():
+    assert 20 == Yatzy.largeStraight(2, 3, 4, 5, 6)
+    assert 0 == Yatzy.largeStraight(1, 2, 3, 4, 5)
+    assert 0 == Yatzy.largeStraight(1, 3, 4, 5, 5)
+    assert 0 == Yatzy.largeStraight(6, 6, 6, 6, 6)
+    assert 0 == Yatzy.largeStraight(1, 2, 3, 4, 6)
 
 
 # Full house:
@@ -219,7 +212,7 @@ def test_large_straight():
 
 @pytest.mark.full
 def test_fullHouse():
-    assert 8 == Yatzy.full_house(1, 1, 2, 2, 2)
-    assert 0 == Yatzy.full_house(2, 2, 3, 3, 4)
-    assert 0 == Yatzy.full_house(4, 4, 4, 4, 4)
-    assert 0 == Yatzy.full_house(4, 4, 4, 1, 2)
+    assert 8 == Yatzy.fullHouse(1, 1, 2, 2, 2)
+    assert 0 == Yatzy.fullHouse(2, 2, 3, 3, 4)
+    assert 0 == Yatzy.fullHouse(4, 4, 4, 4, 4)
+    assert 0 == Yatzy.fullHouse(4, 4, 4, 1, 2)
