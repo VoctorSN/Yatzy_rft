@@ -1,192 +1,87 @@
-
-"""
-    Modulo de la clase yatzy
-    En este modulo hay 1 clase
-    yatzy y detro de ella hay diferentes
-    funciones/metodos, cada uno
-    de ellos es un metodo de puntuaje
-    del juego yatzy,
-    todos estos metodos tienen
-    como argumento una lista de enteros que
-    son los dados del juego,
-    dependiendo de los dados que salgan 
-    y el metodo de puntuaje que elijas
-    obtendras mas o menos puntos 
-"""
-if __name__ == "__main__":
-
-    from pips import Pips
-
-else:
-
-    from src.pips import Pips
+"""Modulo completo del ejercicio"""
 
 class Yatzy:
 
-    """
-    clase yatzy con los metodos
-    de puntuaje
-    """
-    def __init__(self, *dice):
-        self.dice = list(dice)
+    """Clase yatzy representa el juego yatzy
+    con las funciones y constantes propias del juego"""
 
-    @classmethod
-    def biggest_pip_repeated(cls, dice, times):
-        """
-        llama a la funcion filter_pips_repeated y 
-        si devuelve algun numero coje el primero 
-        (que es el mas alto) y lo devuelve
-        """
-        return (cls.filter_pips_repeated(dice, times)[0]
-                if cls.filter_pips_repeated(dice, times) else [])
-
-    @classmethod
-    def filter_pips_repeated(cls, dice, times):
-        """
-        con el argumento times, numero de veces,
-        crea una lista con los numeros que se 
-        repites times veces ordenados de mayor a menor
-        """
-        return list(filter(lambda pip: dice.count(pip) >= times, [6,5,4,3,2,1]))
+    MAX_POINTS = 50
+    NO_POINTS = 0
 
     @staticmethod
-    def count_mult(dice,number):
-        """
-        Para facilitar la resoulcion de ones,twos...
-        y evitar la repeticion, creo esta funcion
-        """
-        return dice.count(number) * number if isinstance(dice, tuple) else Yatzy.count_mult(dice, number) * number
+    def only_repeated(dados:list,repeticiones:int) -> int:
+        """devuelve una lista con los numeros repetidos repeticiones veces"""
+        return [dado for dado in set(dados) if dados.count(dado) >= repeticiones]
 
     @staticmethod
-    def chance(*dice):
-        """
-        devuelve un entero,
-        la suma de todos los dados
-        """
-        return sum(dice)
+    def count_sum(dados:list,repeticiones:int,numero:int) -> int :
+        """coge una lista (dados) y multiplica numero veces
+        el numero repeticiones"""
+        return dados.count(numero) * repeticiones
 
     @staticmethod
-    def yatzy(*dice):
+    def chance(*dados:list) -> int:
         """
-        la funcion set crea
-        un tipo de objeto que es
-        como una lista pero sin repetidos,
-        por tanto si el dice sin repetidos
-        tiene 1 de latgo esto significa que
-        todo el dice esta formado por 1 unico
-        numnero repetido
+        recibe varios parametros y suma todos ellos
+        convertir los 5 argumentos en una lista mediante un *
+        convirtiendolo en *args y asi poder usar la funcion sum
         """
-        return 50 if len(set(dice)) == 1 else 0
+        return sum(dados)
+
+    @staticmethod
+    def yatzy(*dados):
+        return Yatzy.MAX_POINTS if len(set(dados)) == 1 else Yatzy.NO_POINTS
 
     @classmethod
-    def ones(cls,*dice):
-        """
-        suma 1 punto por cada 1 que salga
-        """
-        return cls.count_mult(dice,1)
+    def ones(cls,*dados:list) -> int:
+        return cls.count_sum(dados,1,1)
 
     @classmethod
-    def twos(cls,*dice):
-        """
-        suma 2 puntos por cada 2 que salga
-        """
-        return cls.count_mult(dice,2)
+    def twos(cls,*dados:list) -> int:
+        return cls.count_sum(dados,2,2)
 
     @classmethod
-    def threes(cls,*dice):
-        """
-        suma 3 puntos por cada 3 que salga
-        """
-        return cls.count_mult(dice,3)
+    def threes(cls,*dados:list) -> int:
+        return cls.count_sum(dados,3,3)
 
     @classmethod
-    def fours(cls,*dice):
-        """
-        suma 4 puntos por cada 4 que salga
-        """
-        return cls.count_mult(dice,4)
+    def fours(cls,*dados:list) -> int:
+        return cls.count_sum(dados,4,4)
 
     @classmethod
-    def fives(cls,*dice):
-        """
-        suma 5 puntos por cada 5 que salga
-        """
-        return cls.count_mult(dice,5)
+    def fives(cls,*dados:list) -> int:
+        return cls.count_sum(dados,5,5)
 
     @classmethod
-    def sixes(cls,*dice):
-        """
-        suma 6 puntos por cada 6 que salga
-        """
-        return cls.count_mult(dice,6)
+    def sixes(cls,*dados:list) -> int:
+        return cls.count_sum(dados,6,6)
 
     @classmethod
-    def pair(cls,*dice):
-        """
-        crea una lista sin repetidos
-        con todos los numeros que aparecen
-        2 o mas veces y los multiplica por 2,
-        si no hay repetidos puntua 0
-        """
-        return (cls.biggest_pip_repeated(dice,2) * 2
-                if cls.filter_pips_repeated(dice, 2) else 0)
+    def score_pair(cls,*dados:list) -> int:
+        return max(cls.only_repeated(dados,2)) * 2
 
     @classmethod
-    def two_pairs(cls, *dice):
-        """
-        utiliza una funcion que saca los numeros
-        que se han repetido 2 veces y multiplica
-        la suma por 2 si es que existen 2 parejas
-        """
-        return (sum(cls.filter_pips_repeated(dice, 2)) * 2
-                if len(cls.filter_pips_repeated(dice, 2)) == 2 else 0)
+    def two_pair(cls,*dados:list) -> int:
+        repetidos = cls.only_repeated(dados,2)
+        return sum(repetidos) * 2 if len(repetidos) > 1 else Yatzy.NO_POINTS
 
     @classmethod
-    def three_of_a_kind(cls, *dice):
-        """
-        si un numero se repite 3 veces se detecta 
-        con la funcion filter pips repeated y si 
-        exite ordena la lista y coje el numero del
-        medio de la lista ordenada
-        """
-        return sorted(dice)[2] * 3 if cls.filter_pips_repeated(dice, 3) else 0
+    def three_of_a_kind(cls,*dados:list) -> int:
+        return sum(cls.only_repeated(dados,3)) *3
 
     @classmethod
-    def four_of_a_kind(cls, *dice):
-        """
-        si un numero se repite 3 veces se detecta 
-        con la funcion filter pips repeated y si 
-        exite ordena la lista y coje el numero del
-        medio de la lista ordenada
-        """
-        return sorted(dice)[2] * 4 if cls.filter_pips_repeated(dice, 4) else 0
+    def four_of_a_kind(cls,*dados) -> int:
+        return sum(cls.only_repeated(dados,4)) *4
 
     @classmethod
-    def small_straight(cls, *dice):
-        """
-        recibe una lista de enteros, los ordena
-        y para que sume puntos con este sistema
-        la lista ordenada tiene que ser los numeros
-        de 1 al 5
-        """
-        return 15 if sorted(dice) == list(Pips.minus(Pips.SIX)) else 0
+    def smallStraight(cls,*dados):
+        return sum(dados) if 6 not in dados and len(cls.only_repeated(dados,2)) == 0 else Yatzy.NO_POINTS
 
     @classmethod
-    def large_straight(cls, *dice):
-        """
-        hace lo mismo que small_straight pero
-        con los numeros del 2 al 6
-        """
-        return 20 if sorted(dice) == list(Pips.minus(Pips.ONE)) else 0
+    def largeStraight(cls,*dados):
+        return sum(dados) if 1 not in dados and len(cls.only_repeated(dados,2)) == 0 else Yatzy.NO_POINTS
+
 
     @classmethod
-    def full_house(cls, *dice):
-        """
-        para que puntue este metodo en la lista
-        tienen que darnos un numero que aparezca
-        2 veces y otro que aparezca 3,
-        si se cumple la condicion se suman todos los numeros
-        """
-        return (sum(dice)
-                if len(cls.filter_pips_repeated(dice, 2)) == 2
-                and cls.filter_pips_repeated(dice, 3) else 0)
+    def fullHouse(cls,*dados):
+        return sum(dados) if len(cls.only_repeated(dados,2)) == 2 else Yatzy.NO_POINTS
