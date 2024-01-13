@@ -1,7 +1,14 @@
+"""
+File that contains the class Pips
+"""
+
 from enum import Enum, unique
 
 @unique
 class Pips(Enum):
+    """
+    Pips class with the posible values for dice
+    """
 
     ONE = 1
     TWO = 2
@@ -13,5 +20,5 @@ class Pips(Enum):
 if __name__ == "__main__":
     for num in Pips.__members__.values():
         print(num)
-        print(num._value_)
+        print(num.value)
     print(Pips.__members__.values())

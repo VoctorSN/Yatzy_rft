@@ -25,67 +25,67 @@ class Yatzy:
     def chance(*dados:list) -> int:
         """
         recibe varios parametros y suma todos ellos
-        convertir los 5 argumentos en una lista mediante un *
+        convertir los Pips.FIVE.value argumentos en una lista mediante un *
         convirtiendolo en *args y asi poder usar la funcion sum
         """
         return sum(dados)
 
     @staticmethod
     def yatzy(*dados):
-        return Yatzy.MAX_POINTS if len(set(dados)) == 1 else Yatzy.NO_POINTS
+        return Yatzy.MAX_POINTS if len(set(dados)) == Pips.ONE.value else Yatzy.NO_POINTS
 
     @classmethod
     def ones(cls,*dados:list) -> int:
-        return cls.count_sum(dados,1,1)
+        return cls.count_sum(dados,Pips.ONE.value,Pips.ONE.value)
 
     @classmethod
     def twos(cls,*dados:list) -> int:
-        return cls.count_sum(dados,2,2)
+        return cls.count_sum(dados,Pips.TWO.value,Pips.TWO.value)
 
     @classmethod
     def threes(cls,*dados:list) -> int:
-        return cls.count_sum(dados,3,3)
+        return cls.count_sum(dados,Pips.THREE.value,Pips.THREE.value)
 
     @classmethod
     def fours(cls,*dados:list) -> int:
-        return cls.count_sum(dados,4,4)
+        return cls.count_sum(dados,Pips.FOUR.value,Pips.FOUR.value)
 
     @classmethod
     def fives(cls,*dados:list) -> int:
-        return cls.count_sum(dados,5,5)
+        return cls.count_sum(dados,Pips.FIVE.value,Pips.FIVE.value)
 
     @classmethod
     def sixes(cls,*dados:list) -> int:
-        return cls.count_sum(dados,6,6)
+        return cls.count_sum(dados,Pips.SIX.value,Pips.SIX.value)
 
     @classmethod
     def score_pair(cls,*dados:list) -> int:
-        maximo_repetido=cls.only_repeated(dados,2)
-        return max(maximo_repetido) * 2 if maximo_repetido else Yatzy.NO_POINTS
+        maximo_repetido=cls.only_repeated(dados,Pips.TWO.value)
+        return max(maximo_repetido) * Pips.TWO.value if maximo_repetido else Yatzy.NO_POINTS
 
     @classmethod
     def two_pair(cls,*dados:list) -> int:
-        """Usa la funcion only_repeated que nos indica el numero que se repite una cantidad exacta de veces, en este caso 2 y lo multiplica por dos para obtener la puntuación"""
-        repetidos = cls.only_repeated(dados,2)
-        return sum(repetidos) * 2 if len(repetidos) > 1 else Yatzy.NO_POINTS
+        """Usa la funcion only_repeated que nos indica el numero que se repite una cantidad exacta de veces, en este caso Pips.TWO.value y lo multiplica por dos para obtener la puntuación"""
+        repetidos = cls.only_repeated(dados,Pips.TWO.value)
+        return sum(repetidos) * Pips.TWO.value if len(repetidos) > Pips.ONE.value else Yatzy.NO_POINTS
 
     @classmethod
     def three_of_a_kind(cls,*dados:list) -> int:
-        return sum(cls.only_repeated(dados,3)) * 3
+        return sum(cls.only_repeated(dados,Pips.THREE.value)) * Pips.THREE.value
 
     @classmethod
     def four_of_a_kind(cls,*dados) -> int:
-        return sum(cls.only_repeated(dados,4)) * 4
+        return sum(cls.only_repeated(dados,Pips.FOUR.value)) * Pips.FOUR.value
 
     @classmethod
     def smallStraight(cls,*dados):
-        return sum(dados) if sum(set(dados) - {Pips.SIX._value_}) == sum(dados) else Yatzy.NO_POINTS
+        return sum(dados) if sum(set(dados) - {Pips.SIX.value}) == sum(dados) else Yatzy.NO_POINTS
 
     @classmethod
     def largeStraight(cls,*dados):
-        return sum(dados) if sum(set(dados) - {Pips.ONE._value_}) == sum(dados) else Yatzy.NO_POINTS
+        return sum(dados) if sum(set(dados) - {Pips.ONE.value}) == sum(dados) else Yatzy.NO_POINTS
 
 
     @classmethod
     def fullHouse(cls,*dados):
-        return sum(dados) if len(cls.only_repeated(dados,2)) == 2 and len(set(dados)) == 2 else Yatzy.NO_POINTS
+        return sum(dados) if len(cls.only_repeated(dados,Pips.TWO.value)) == Pips.TWO.value and len(set(dados)) == Pips.TWO.value else Yatzy.NO_POINTS
