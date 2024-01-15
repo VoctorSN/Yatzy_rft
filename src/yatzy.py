@@ -12,7 +12,8 @@ class Yatzy:
 
     @staticmethod
     def __only_repeated(dados:list[int],repeticiones:int) -> list[int]:
-        """devuelve una lista con los numeros repetidos 'repeticiones' veces"""
+        """devuelve una lista con los numeros repetidos 'repeticiones' veces, 
+        es una funcion privada y solo la uso dentro de la clase"""
         return [dado for dado in set(dados) if dados.count(dado) >= repeticiones]
 
     @staticmethod
@@ -28,7 +29,7 @@ class Yatzy:
         recibe varios parametros y suma todos ellos
         convertir los Pips.FIVE.value argumentos en una lista mediante un *
         convirtiendolo en *args y asi poder usar la funcion sum
-        , es una funcion privada y solo la uso dentro de la clase
+        
         """
         return sum(dados)
 
