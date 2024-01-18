@@ -10,12 +10,12 @@ class Pips(Enum):
     Pips class with the posible values for dice
     """
 
-    ONE = 1
-    TWO = 2
-    THREE = 3
-    FOUR = 4
-    FIVE = 5
-    SIX = 6
+    UNO = 1
+    DOS = 2
+    TRES = 3
+    CUATRO = 4
+    CINCO = 5
+    SEIS = 6
 
 if __name__ == "__main__":
     for num in Pips.__members__.values():
